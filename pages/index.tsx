@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
 import {
   fetchPosts,
@@ -6,47 +6,11 @@ import {
   getUsersStatus,
   selectAllUsers,
 } from '@/redux/features/users/userSlice';
-import { Users } from '@/component/Users';
-
-const list = [
-  {
-    id: 1,
-    email: 'george.bluth@reqres.in',
-    first_name: 'George',
-    last_name: 'Bluth',
-    avatar: 'https://reqres.in/img/faces/1-image.jpg',
-  },
-  {
-    id: 2,
-    email: 'janet.weaver@reqres.in',
-    first_name: 'Janet',
-    last_name: 'Weaver',
-    avatar: 'https://reqres.in/img/faces/2-image.jpg',
-  },
-  {
-    id: 3,
-    email: 'emma.wong@reqres.in',
-    first_name: 'Emma',
-    last_name: 'Wong',
-    avatar: 'https://reqres.in/img/faces/3-image.jpg',
-  },
-  {
-    id: 4,
-    email: 'eve.holt@reqres.in',
-    first_name: 'Eve',
-    last_name: 'Holt',
-    avatar: 'https://reqres.in/img/faces/4-image.jpg',
-  },
-  {
-    id: 5,
-    email: 'charles.morris@reqres.in',
-    first_name: 'Charles',
-    last_name: 'Morris',
-    avatar: 'https://reqres.in/img/faces/5-image.jpg',
-  },
-];
+import * as React from 'react';
 
 export default function Home() {
+  const [pageNo, setPageNo] = useState(1);
+
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectAllUsers);
 
@@ -55,23 +19,51 @@ export default function Home() {
   const error = useAppSelector(getUsersError);
 
   useEffect(() => {
-    if (postStatus === 'idle') {
-      dispatch(fetchPosts());
+    console.log('Inside use effect');
+    if (postStatus !== 'loading') {
+      dispatch(fetchPosts(pageNo));
     }
-  }, [postStatus, dispatch]);
+  }, [pageNo, dispatch]);
 
-  let content;
-  if (postStatus === 'loading') {
-    content = (
-      <p className="flex flex-col h-screen place-content-center text-center">
-        Loading...
-      </p>
-    );
-  } else if (postStatus === 'succeeded') {
-    content = <Users list={users} />;
-  } else if (postStatus === 'failed') {
-    content = <p>{error}</p>;
-  }
-
-  return <>{content}</>;
+  return (
+    <div className="h-screen flex flex-col justify-center gap-2">
+      {postStatus === 'loading' ? (
+        <p className="flex flex-col place-content-center text-center h-[240px]">
+          Loading...
+        </p>
+      ) : postStatus === 'failed' ? (
+        <p className="flex flex-col place-content-center text-center h-[240px]">
+          {error}
+        </p>
+      ) : postStatus === 'succeeded' ? (
+        <div className="flex flex-col place-content-center h-[240px] ">
+          <ul className="w-1/4 self-center h-[240px]">
+            {users.map(item => (
+              <li className=" bg-pinkish mb-2 p-2 rounded shadow" key={item.id}>
+                {`${item.id}.`} {item.first_name} {item.last_name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      <div className="flex flex-col align-middle justify-center">
+        <div className="flex w-1/2 justify-between self-center">
+          <button
+            onClick={() => {
+              pageNo > 1 && setPageNo(pageNo - 1);
+            }}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => setPageNo(pageNo + 1)}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

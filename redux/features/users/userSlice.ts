@@ -10,10 +10,10 @@ export interface usersState {
   error: string | null;
 }
 
-const USERS_URL = 'https://reqres.in/api/users?page=1&per_page=5';
+const USERS_URL = 'https://reqres.in/api/users';
 export const fetchPosts = createAsyncThunk(
   'users/fetchUsers',
-  async (page: number = 5) => {
+  async (page: number = 1) => {
     // Use the page parameter to construct the URL
     const response = await axios.get(`${USERS_URL}?page=${page}&per_page=5`);
     return response.data.data;
