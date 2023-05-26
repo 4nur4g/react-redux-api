@@ -5,23 +5,30 @@ import {
   getUsersError,
   getUsersStatus,
   selectAllUsers,
+  getAvailablePageData,
+  pageDataAdded,
 } from '@/redux/features/users/userSlice';
 import * as React from 'react';
 
+type arraylist = number[];
+
 export default function Home() {
   const [pageNo, setPageNo] = useState(1);
-
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectAllUsers);
+  const availableData = useAppSelector(getAvailablePageData);
 
   const posts = useAppSelector(selectAllUsers);
   const postStatus = useAppSelector(getUsersStatus);
   const error = useAppSelector(getUsersError);
 
   useEffect(() => {
-    console.log('Inside use effect');
     if (postStatus !== 'loading') {
-      dispatch(fetchPosts(pageNo));
+      if (availableData.includes(pageNo)) {
+      } else {
+        dispatch(pageDataAdded(pageNo));
+        dispatch(fetchPosts(pageNo));
+      }
     }
   }, [pageNo, dispatch]);
 

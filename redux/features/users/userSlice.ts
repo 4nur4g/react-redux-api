@@ -8,6 +8,7 @@ export interface usersState {
   users: any[];
   status: string;
   error: string | null;
+  availablePageData: number[];
 }
 
 const USERS_URL = 'https://reqres.in/api/users';
@@ -24,12 +25,17 @@ const initialState: usersState = {
   users: [],
   status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
+  availablePageData: [],
 };
 
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    pageDataAdded: (state, action: PayloadAction<number>) => {
+      state.availablePageData.push(action.payload);
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state, action) => {
@@ -37,7 +43,7 @@ export const usersSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.users = action.payload;
+        state.users = state.users.concat(action.payload);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
@@ -46,10 +52,12 @@ export const usersSlice = createSlice({
   },
 });
 
-export const {} = usersSlice.actions;
+export const { pageDataAdded } = usersSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.user.users;
 export const getUsersStatus = (state: RootState) => state.user.status;
 export const getUsersError = (state: RootState) => state.user.error;
+export const getAvailablePageData = (state: RootState) =>
+  state.user.availablePageData;
 
 export default usersSlice.reducer;
