@@ -1,37 +1,51 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
+import axios from 'axios';
 
 // Define a type for the slice state
-export interface CounterState {
-  value: number;
+export interface usersState {
+  users: any[];
+  status: string;
+  error: string | null;
 }
 
-// Define the initial state using that type
-const initialState: CounterState = {
-  value: 0,
+const USERS_URL = 'https://reqres.in/api/users?page=1&per_page=5';
+export const fetchPosts = createAsyncThunk('users/fetchUsers', async () => {
+  const response = await axios.get(USERS_URL);
+  return response.data;
+});
+
+const initialState: usersState = {
+  users: [],
+  status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+  error: null,
 };
 
-export const counterSlice = createSlice({
-  name: 'counter',
-  // `createSlice` will infer the state type from the `initialState` argument
+export const usersSlice = createSlice({
+  name: 'users',
   initialState,
-  reducers: {
-    increment: state => {
-      state.value += 1;
-    },
-    decrement: state => {
-      state.value -= 1;
-    },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
-    },
+  reducers: {},
+  extraReducers(builder) {
+    builder
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.users = state.users.concat(action.payload);
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      });
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const {} = usersSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value;
+export const selectUsers = (state: RootState) => state.user.users;
+export const selectAllUsers = (state: RootState) => state.user.users;
+export const getPostsStatus = (state: RootState) => state.user.status;
+export const getPostsError = (state: RootState) => state.user.error;
 
-export default counterSlice.reducer;
+export default usersSlice.reducer;
