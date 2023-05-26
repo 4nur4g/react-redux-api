@@ -1,3 +1,12 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
+import {
+  fetchPosts,
+  getUsersError,
+  getUsersStatus,
+  selectAllUsers,
+} from '@/redux/features/users/userSlice';
+
 const list = [
   {
     id: 1,
@@ -37,6 +46,19 @@ const list = [
 ];
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  const users = useAppSelector(selectAllUsers);
+
+  const posts = useAppSelector(selectAllUsers);
+  const postStatus = useAppSelector(getUsersStatus);
+  const error = useAppSelector(getUsersError);
+
+  useEffect(() => {
+    if (postStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
+
   return (
     <div className="flex flex-col h-screen place-content-center">
       <ul className="w-1/4 self-center">

@@ -12,7 +12,7 @@ export interface usersState {
 const USERS_URL = 'https://reqres.in/api/users?page=1&per_page=5';
 export const fetchPosts = createAsyncThunk('users/fetchUsers', async () => {
   const response = await axios.get(USERS_URL);
-  return response.data;
+  return response.data.data;
 });
 
 const initialState: usersState = {
@@ -33,6 +33,7 @@ export const usersSlice = createSlice({
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.users = state.users.concat(action.payload);
+        console.log(state.users);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
@@ -43,9 +44,8 @@ export const usersSlice = createSlice({
 
 export const {} = usersSlice.actions;
 
-export const selectUsers = (state: RootState) => state.user.users;
 export const selectAllUsers = (state: RootState) => state.user.users;
-export const getPostsStatus = (state: RootState) => state.user.status;
-export const getPostsError = (state: RootState) => state.user.error;
+export const getUsersStatus = (state: RootState) => state.user.status;
+export const getUsersError = (state: RootState) => state.user.error;
 
 export default usersSlice.reducer;
