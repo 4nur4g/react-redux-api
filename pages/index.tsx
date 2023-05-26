@@ -26,43 +26,34 @@ export default function Home() {
   }, [pageNo, dispatch]);
 
   return (
-    <div className="h-screen flex flex-col justify-center gap-2">
-      {postStatus === 'loading' ? (
-        <p className="flex flex-col place-content-center text-center h-[240px]">
-          Loading...
-        </p>
-      ) : postStatus === 'failed' ? (
-        <p className="flex flex-col place-content-center text-center h-[240px]">
-          {error}
-        </p>
-      ) : postStatus === 'succeeded' ? (
-        <div className="flex flex-col place-content-center h-[240px] ">
-          <ul className="w-1/4 self-center h-[240px]">
+    <div className="h-screen w-screen flex flex-col items-center content-center justify-center">
+      <div className="flex align-middle justify-center h-[15rem]">
+        {postStatus === 'succeeded' && (
+          <ul className="h-[15rem] w-64 ">
             {users.map(item => (
-              <li className=" bg-pinkish mb-2 p-2 rounded shadow" key={item.id}>
+              <li className="bg-pinkish mb-2 p-2 rounded shadow" key={item.id}>
                 {`${item.id}.`} {item.first_name} {item.last_name}
               </li>
             ))}
           </ul>
-        </div>
-      ) : null}
-      <div className="flex flex-col align-middle justify-center">
-        <div className="flex w-1/2 justify-between self-center">
-          <button
-            onClick={() => {
-              pageNo > 1 && setPageNo(pageNo - 1);
-            }}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
-          >
-            Prev
-          </button>
-          <button
-            onClick={() => setPageNo(pageNo + 1)}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
-          >
-            Next
-          </button>
-        </div>
+        )}
+      </div>
+
+      <div className="flex justify-between w-1/2 ">
+        <button
+          onClick={() => {
+            pageNo > 1 && setPageNo(pageNo - 1);
+          }}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+        >
+          Prev
+        </button>
+        <button
+          onClick={() => setPageNo(pageNo + 1)}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
