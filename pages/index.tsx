@@ -6,6 +6,7 @@ import {
   getUsersStatus,
   selectAllUsers,
 } from '@/redux/features/users/userSlice';
+import { Users } from '@/component/Users';
 
 const list = [
   {
@@ -59,23 +60,18 @@ export default function Home() {
     }
   }, [postStatus, dispatch]);
 
-  return (
-    <div className="flex flex-col h-screen place-content-center">
-      <ul className="w-1/4 self-center">
-        {list.map(item => (
-          <li className=" bg-pinkish mb-2 p-2 rounded shadow" key={item.id}>
-            {`${item.id}.`} {item.first_name} {item.last_name}
-          </li>
-        ))}
-      </ul>
-      <div className="flex w-1/2 justify-between self-center">
-        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Prev
-        </button>
-        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Next
-        </button>
-      </div>
-    </div>
-  );
+  let content;
+  if (postStatus === 'loading') {
+    content = (
+      <p className="flex flex-col h-screen place-content-center text-center">
+        Loading...
+      </p>
+    );
+  } else if (postStatus === 'succeeded') {
+    content = <Users list={users} />;
+  } else if (postStatus === 'failed') {
+    content = <p>{error}</p>;
+  }
+
+  return <>{content}</>;
 }

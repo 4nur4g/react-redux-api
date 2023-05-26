@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
 import axios from 'axios';
+import { act } from 'react-dom/test-utils';
 
 // Define a type for the slice state
 export interface usersState {
@@ -10,10 +11,14 @@ export interface usersState {
 }
 
 const USERS_URL = 'https://reqres.in/api/users?page=1&per_page=5';
-export const fetchPosts = createAsyncThunk('users/fetchUsers', async () => {
-  const response = await axios.get(USERS_URL);
-  return response.data.data;
-});
+export const fetchPosts = createAsyncThunk(
+  'users/fetchUsers',
+  async (page: number = 5) => {
+    // Use the page parameter to construct the URL
+    const response = await axios.get(`${USERS_URL}?page=${page}&per_page=5`);
+    return response.data.data;
+  }
+);
 
 const initialState: usersState = {
   users: [],
@@ -32,8 +37,7 @@ export const usersSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.users = state.users.concat(action.payload);
-        console.log(state.users);
+        state.users = action.payload;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
