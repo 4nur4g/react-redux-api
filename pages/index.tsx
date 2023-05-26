@@ -7,6 +7,7 @@ import {
   selectAllUsers,
   getAvailablePageData,
   pageDataAdded,
+  getDataLimit,
 } from '@/redux/features/users/userSlice';
 import * as React from 'react';
 
@@ -22,6 +23,8 @@ export default function Home() {
   const postStatus = useAppSelector(getUsersStatus);
   const error = useAppSelector(getUsersError);
 
+  const dataLimit = useAppSelector(getDataLimit);
+
   useEffect(() => {
     if (postStatus !== 'loading') {
       if (availableData.includes(pageNo)) {
@@ -30,15 +33,20 @@ export default function Home() {
         dispatch(fetchPosts(pageNo));
       }
     }
-  }, [pageNo, dispatch]);
+  }, [pageNo]);
+
+  console.log(dataLimit.limit, users.length);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center content-center justify-center">
-      <div className="flex align-middle justify-center h-[15rem]">
-        {postStatus === 'succeeded' && (
-          <ul className="h-[15rem] w-64 ">
+    <div className="h-screen w-screen flex flex-col items-center content-center justify-center gap-2">
+      <div className="flex align-middle justify-center ">
+        {users && (
+          <ul className=" w-64 ">
             {users.map(item => (
-              <li className="bg-pinkish mb-2 p-2 rounded shadow" key={item.id}>
+              <li
+                className="bg-pinkish mb-2 p-2 rounded shadow hover:cursor-pointer"
+                key={item.id}
+              >
                 {`${item.id}.`} {item.first_name} {item.last_name}
               </li>
             ))}
@@ -46,22 +54,14 @@ export default function Home() {
         )}
       </div>
 
-      <div className="flex justify-between w-1/2 ">
-        <button
-          onClick={() => {
-            pageNo > 1 && setPageNo(pageNo - 1);
-          }}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
-        >
-          Prev
-        </button>
+      {dataLimit.limit != null && users.length < dataLimit.limit! && (
         <button
           onClick={() => setPageNo(pageNo + 1)}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
         >
-          Next
+          Load More
         </button>
-      </div>
+      )}
     </div>
   );
 }
