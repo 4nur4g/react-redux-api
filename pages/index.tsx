@@ -18,15 +18,13 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const users = useAppSelector(selectAllUsers);
   const availableData = useAppSelector(getAvailablePageData);
-
-  const posts = useAppSelector(selectAllUsers);
-  const postStatus = useAppSelector(getUsersStatus);
+  const userStatus = useAppSelector(getUsersStatus);
   const error = useAppSelector(getUsersError);
 
   const dataLimit = useAppSelector(getDataLimit);
 
   useEffect(() => {
-    if (postStatus !== 'loading') {
+    if (userStatus !== 'loading') {
       if (availableData.includes(pageNo)) {
       } else {
         dispatch(pageDataAdded(pageNo));
@@ -35,15 +33,17 @@ export default function Home() {
     }
   }, [pageNo]);
 
-  console.log(dataLimit.limit, users.length);
-
   return (
     <div className="h-screen w-screen flex flex-col items-center content-center justify-center gap-2">
       <div className="flex align-middle justify-center ">
         {users && (
           <ul className=" w-64 ">
             {users.map(item => (
-              <Link key={item.id} href={`/details/${item.id}`}>
+              <Link
+                className="font-medium"
+                key={item.id}
+                href={`/details/${item.id}`}
+              >
                 <li className="bg-pinkish mb-2 p-2 rounded shadow hover:cursor-pointer">
                   {`${item.id}.`} {item.first_name} {item.last_name}
                 </li>
