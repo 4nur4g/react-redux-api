@@ -32,8 +32,11 @@ export default function Home() {
   }, [pageNo]);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center content-center justify-center gap-2">
-      <div className="flex align-middle justify-center ">
+    <div className=" flex flex-col items-center content-center justify-center gap-2">
+      <h1 className="self-start text-3xl text-pinkish font-bold">
+        The user list
+      </h1>
+      <div className="flex align-middle justify-center text-slate-800 ">
         {error && (
           <div className="flex place-items-center justify-center bg-slate-800 rounded-2xl text-2xl text-white font-medium p-20">
             {'Error loading data'}

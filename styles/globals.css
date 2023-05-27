@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-    @apply p-4 bg-shadeblue
+    @apply p-4 bg-shadeblue flex flex-col justify-center items-center h-screen;
 }

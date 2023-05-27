@@ -14,7 +14,7 @@ const About = (): React.ReactElement => {
   const userData: User | undefined = useUser(+id!);
 
   return userData ? (
-    <div className="h-screen w-screen flex flex-col justify-center place-items-center gap-4">
+    <div className="flex flex-col justify-center place-items-center gap-4">
       <div className="grid grid-cols-[max-content_auto] gap-6 max-w-xl p-8 mx-auto bg-slate-800 rounded-lg items-center">
         <Image
           src={userData.avatar}
