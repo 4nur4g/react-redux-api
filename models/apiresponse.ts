@@ -8,7 +8,7 @@ interface ApiResponse {
 }
 
 interface User {
-  id: number;
+  id: number | string;
   email: string;
   first_name: string;
   last_name: string;

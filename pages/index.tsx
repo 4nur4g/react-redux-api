@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hooks';
 import {
-  fetchPosts,
   getUsersError,
   getUsersStatus,
   selectAllUsers,
   getAvailablePageData,
   pageDataAdded,
   getDataLimit,
+  fetchUsers,
 } from '@/redux/features/users/userSlice';
-import * as React from 'react';
+import Link from 'next/link';
 
 type arraylist = number[];
 
@@ -30,7 +30,7 @@ export default function Home() {
       if (availableData.includes(pageNo)) {
       } else {
         dispatch(pageDataAdded(pageNo));
-        dispatch(fetchPosts(pageNo));
+        dispatch(fetchUsers(pageNo));
       }
     }
   }, [pageNo]);
@@ -43,12 +43,11 @@ export default function Home() {
         {users && (
           <ul className=" w-64 ">
             {users.map(item => (
-              <li
-                className="bg-pinkish mb-2 p-2 rounded shadow hover:cursor-pointer"
-                key={item.id}
-              >
-                {`${item.id}.`} {item.first_name} {item.last_name}
-              </li>
+              <Link key={item.id} href={`/details/${item.id}`}>
+                <li className="bg-pinkish mb-2 p-2 rounded shadow hover:cursor-pointer">
+                  {`${item.id}.`} {item.first_name} {item.last_name}
+                </li>
+              </Link>
             ))}
           </ul>
         )}

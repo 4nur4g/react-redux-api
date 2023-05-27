@@ -12,7 +12,7 @@ export interface usersState {
 }
 
 const USERS_URL = 'https://reqres.in/api/users';
-export const fetchPosts = createAsyncThunk(
+export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async (page: number = 1) => {
     // Use the page parameter to construct the URL
@@ -39,10 +39,10 @@ export const usersSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchPosts.pending, (state, action) => {
+      .addCase(fetchUsers.pending, (state, action) => {
         state.status = 'loading';
       })
-      .addCase(fetchPosts.fulfilled, (state, action) => {
+      .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (state.dataLimit.pages === null) {
           state.dataLimit = {
@@ -52,7 +52,7 @@ export const usersSlice = createSlice({
         }
         state.users = state.users.concat(action.payload.data);
       })
-      .addCase(fetchPosts.rejected, (state, action) => {
+      .addCase(fetchUsers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });
@@ -67,5 +67,8 @@ export const getUsersError = (state: RootState) => state.user.error;
 export const getAvailablePageData = (state: RootState) =>
   state.user.availablePageData;
 export const getDataLimit = (state: RootState) => state.user.dataLimit;
+
+export const selectUser = (id: number | string) => (state: RootState) =>
+  state.user.users.find(user => user.id === id);
 
 export default usersSlice.reducer;
