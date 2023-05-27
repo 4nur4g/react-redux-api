@@ -2,7 +2,7 @@
 
 This is a simple web application built using React, Redux Toolkit, and Next.js. It fetches data from an API and displays it in a list view. The application also includes pagination, a details page, and a responsive UI.
 
-To test the application, you can visit [this link]().
+To test the application, you can visit [this link](https://react-redux-api-8xz4.vercel.app/).
 
 The app uses the following API to fetch user data: https://reqres.in/api/users?page=1&per_page=5
 
