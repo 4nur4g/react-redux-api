@@ -5,9 +5,6 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import Image from 'next/image';
 
-type Props = {
-  userData: User;
-};
 const About = (): React.ReactElement => {
   const {
     query: { slug: id },

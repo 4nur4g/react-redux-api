@@ -11,8 +11,6 @@ import {
 } from '@/redux/features/users/userSlice';
 import Link from 'next/link';
 
-type arraylist = number[];
-
 export default function Home() {
   const [pageNo, setPageNo] = useState(1);
   const dispatch = useAppDispatch();
