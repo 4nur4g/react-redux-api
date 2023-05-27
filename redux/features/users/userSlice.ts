@@ -22,7 +22,6 @@ const USERS_URL = 'https://reqres.in/api/users';
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async (page: number = 1) => {
-    // Use the page parameter to construct the URL
     const response = await axios.get(`${USERS_URL}?page=${page}&per_page=5`);
     return response.data as ApiResponse;
   }
@@ -74,7 +73,6 @@ export const usersSlice = createSlice({
 });
 
 export const { pageDataAdded } = usersSlice.actions;
-
 export const selectAllUsers = (state: RootState) => state.user.users;
 export const getUsersStatus = (state: RootState) => state.user.status;
 export const getUsersError = (state: RootState) => state.user.error;
