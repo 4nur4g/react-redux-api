@@ -1,14 +1,7 @@
-import {
-  createAction,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store';
 import axios from 'axios';
-import { HYDRATE } from 'next-redux-wrapper';
 
-const hydrate = createAction<usersState>(HYDRATE);
 // Define a type for the slice state
 export interface usersState {
   users: User[];
@@ -61,13 +54,6 @@ export const usersSlice = createSlice({
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
-      })
-      .addCase(hydrate, (state, action) => {
-        console.log('HYDRATE users', action.payload);
-        return {
-          ...state,
-          ...action.payload.users,
-        };
       });
   },
 });
