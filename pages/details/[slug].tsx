@@ -1,9 +1,10 @@
 // @flow
 import * as React from 'react';
-import { useUser } from '@/redux/app/hooks';
+import { useAppSelector } from '@/redux/app/hooks';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
 import Image from 'next/image';
+import { selectUserById } from '@/redux/features/users/userSlice';
 
 const About = (): React.ReactElement => {
   const {
@@ -11,7 +12,8 @@ const About = (): React.ReactElement => {
   } = useRouter();
 
   const router = useRouter();
-  const userData: User | undefined = useUser(+id!);
+
+  const userData = useAppSelector(state => selectUserById(state, Number(id)));
 
   return userData ? (
     <div className="flex flex-col justify-center place-items-center gap-4">

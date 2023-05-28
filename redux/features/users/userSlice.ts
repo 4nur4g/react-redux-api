@@ -65,5 +65,8 @@ export const getUsersError = (state: RootState) => state.user.error;
 export const getAvailablePageData = (state: RootState) =>
   state.user.availablePageData;
 export const getDataLimit = (state: RootState) => state.user.dataLimit;
+export const selectUserById = (state: RootState, id: number) => {
+  return state.user.users.find(user => user.id === id);
+};
 
 export default usersSlice.reducer;
