@@ -24,20 +24,19 @@ export interface usersState {
   status: string;
   error: string | null;
   availablePageData: number[];
-  dataLimit: { pages: number | null, limit: number | null };
+  dataLimit: { pages: number | null; limit: number | null };
 }
 ```
 
 ## Data Fetching Logic
 
 - When the index page is loaded for the first time, it dispatches two actions:
-    - One updates the `pageNo` state with the `page` and `limit` parameters from the API.
-    - Another calls the thunk function `fetchUsers` to fetch the user data from the API.
-- The thunk function `fetchUsers` checks if the requested page is already available in the `availablePageData` field, used to keep track of pages for whom the data is already called.
-    - If not, it makes an API call and updates the `users` and `availablePageData` states with the response data.
-    - It also handles the loading and error states using `status` and `error`.
+  - One updates the `availablePageData` field parameters, where it puts the page no for which the API is being called.
+  - Another calls the thunk function `fetchUsers` to fetch the user data from the API.
+- If the requested page is already available, which can be checked by `availablePageData` field, fetchUsers won't be dispatched.
+  - Extra reducers take care of the loading and error states using `status` and `error` based on the thunk function response.
 - When the "Load More" button is clicked, it dispatches another action to call the `fetchUsers` thunk function with an incremented page parameter.
-    - The thunk function repeats the same logic as before but appends the new data to the existing `users` state instead of replacing it.
+  - The thunk function repeats the same logic as before but appends the new data to the existing `users` state instead of replacing it.
 - When there is no more data available from the API, the "Load More" button is hidden from the UI.
 - When a user item is clicked on the index page, it navigates to the detail page using Next.js dynamic routing and passes the user ID as a query parameter (`[id]`) to the detail page.
 - The detail page uses useSelector hook to fetch the user data from the Redux store, which is then filtered using the user ID to obtain relevant data.

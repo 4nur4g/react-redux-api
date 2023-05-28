@@ -47,11 +47,11 @@ export default function Home() {
             {users.map(item => (
               <Link
                 className="font-medium"
-                key={item.id}
-                href={`/details/${item.id}`}
+                key={item?.id}
+                href={`/details/${item?.id}`}
               >
                 <li className="bg-pinkish mb-2 p-2 rounded shadow hover:cursor-pointer">
-                  {`${item.id}.`} {item.first_name} {item.last_name}
+                  {`${item?.id}.`} {item?.first_name} {item?.last_name}
                 </li>
               </Link>
             ))}

@@ -17,15 +17,15 @@ const About = (): React.ReactElement => {
     <div className="flex flex-col justify-center place-items-center gap-4">
       <div className="grid grid-cols-[max-content_auto] gap-6 max-w-xl p-8 mx-auto bg-slate-800 rounded-lg items-center">
         <Image
-          src={userData.avatar}
-          alt={userData.first_name}
+          src={userData?.avatar}
+          alt={userData?.first_name}
           width={80}
           height={80}
           className="rounded-full self-center"
         ></Image>
         <div className="text-white  ">
-          <p className="text-lg">{`${userData.first_name} ${userData.last_name}`}</p>
-          <p className="">{userData.email}</p>
+          <p className="text-lg ">{`${userData?.first_name} ${userData?.last_name}`}</p>
+          <p className="">{userData?.email}</p>
         </div>
       </div>
       <button
